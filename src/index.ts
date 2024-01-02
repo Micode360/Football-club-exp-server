@@ -13,12 +13,12 @@ import http from 'http'
 import { WebSocketServer } from 'ws'
 import { useServer } from 'graphql-ws/lib/use/ws'
 
-
 // For Context
 import jwt from "jsonwebtoken";
 import { User } from "./models/user";
 import { regenerateAccessToken } from "./utils/utilsFunction";
 import { ExpressContextFunctionArgument } from '@apollo/server/express4'
+import { HomePage } from './utils/template'
 type User = {
   id: string;
 };
@@ -30,17 +30,41 @@ base()
 dotenv.config()
 
 const app: Application = express()
+//app.setMaxListeners(50);
 const port = process.env.PORT || 8000
 const httpServer = http.createServer(app)
+
+
+
 
 const MainServer = async () => {
   const schema = makeExecutableSchema({ typeDefs, resolvers })
 
+     const wsServer = new WebSocketServer({
+      server: httpServer,
+      path: '/graphql',
+    });
+  
+
+    const serverCleanup = useServer({ schema }, wsServer);
+
   const server = new ApolloServer({
     schema,
     introspection: true,
-    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+    plugins: [
+      ApolloServerPluginDrainHttpServer({ httpServer }),
+      {
+        async serverWillStart() {
+          return {
+            async drainServer() {
+              await serverCleanup.dispose();
+            },
+          };
+        },
+      },
+    ],
   })
+
 
   await server.start()
 
@@ -65,6 +89,7 @@ const MainServer = async () => {
         const token = req.headers.authorization || "";
         const bearerToken = token.replace("Bearer ", "");
         const refreshToken = req.cookies.refreshtkn || "";
+        const expiryDate = 7 * 24 * 60 * 60 * 1000;
         let user: User | null = null;
       
         if (!bearerToken) return { user: "unauthorized", status: "public", req, res };
@@ -94,7 +119,7 @@ const MainServer = async () => {
             };
       
             res.cookie("asstkn", newAccessToken, {
-              maxAge: 604800,
+              maxAge: expiryDate,
               path: "/",
             });
       
@@ -108,11 +133,12 @@ const MainServer = async () => {
     }),
   )
 
+
   app.get('/', (req: Request, res: Response) => {
-    res.send('Welcome to Express & TypeScript Server')
+    res.send(HomePage);
   })
 
-  app.listen(port, () => {
+  httpServer.listen(port, () => {
     console.log(`🚀 Express Server is Fired at http://localhost:${port}`)
     console.log(`🚀 Graph Ql Server is Fire at http://localhost:${port}/graphql`)
   })

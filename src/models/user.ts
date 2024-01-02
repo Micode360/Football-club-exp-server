@@ -24,6 +24,10 @@ const UserSchema = new Schema(
         "Please provide a valid email",
       ],
     },
+    role: {
+      type: String,
+      required: false,
+    },
     country: {
       imgPath: {
         type: String,
@@ -89,10 +93,11 @@ UserSchema.methods.compareToMatchPasswords = async function (password: any) {
 UserSchema.methods.getSignedInToken = async function (context:any) {
   const accessToken = await generateAccessToken(this.id);
   const refreshToken = await generateRefreshToken(this.id);
+  const expiryDate = 7 * 24 * 60 * 60 * 1000;
 
     context.res.cookie("refreshtkn", refreshToken, {
       httpOnly: true,
-      maxAge: 604800,
+      maxAge: expiryDate,
       path: "/",
     });
 

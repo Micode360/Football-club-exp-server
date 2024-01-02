@@ -9,6 +9,10 @@ export const createUser = async (parent: any, input: userProperties) => {
 
   try {
     const user = await User.findOne({ email });
+    const checkingRoles = await User.find();
+    let role = checkingRoles.some(({role})=>role === "Super Admin");
+
+
 
     if (!user) {
       const newUser = new User({
@@ -16,6 +20,7 @@ export const createUser = async (parent: any, input: userProperties) => {
         lastName,
         email,
         password,
+        role: role? "Admin": "Super Admin",
         confirmPassword: false,
       });
 

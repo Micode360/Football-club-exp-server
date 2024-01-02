@@ -32,10 +32,12 @@ export const typeDefs = gql`
     lastName: String
     email: String
     country: CountryQuery
+    role:String
     state: String
     city: String
     zipCode: String
     profilePic: ProfilePicQuery
+    createdAt: String
   }
 
   input CountryInput {
@@ -82,12 +84,16 @@ export const typeDefs = gql`
     name: String
   }
 
-  type UserType {
-    name: String
+  input Delete  {
+    authorId: String
+    type: String
+    thisId: String
+    imgId: String
   }
   
   type Query {
     user: User
+    users: [User]
     authorizedAccess: Boolean!
   }
 
@@ -98,9 +104,11 @@ export const typeDefs = gql`
     ChangePassword(input: ChangePassword!): Response
     UpdateUser(input: UserInput!): Response
     PostUser(input: PostInput!): Response
+    DeleteUser(input: Delete!): Response
   }
 
   type Subscription {
-    user: UserType
+    user: User
+    response: Response
   }
 `;

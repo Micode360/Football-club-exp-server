@@ -1,4 +1,3 @@
-//import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 
@@ -42,5 +41,14 @@ export const generateCookie = (name: string, value: string) => {
 
 
 export const harsh = (value:string) =>
- crypto.createHash('sha256').update(value).digest('hex');;
+ crypto.createHash('sha256').update(value).digest('hex');
+
+
+export const generateRandomString = (length:number) => {
+  return crypto.randomBytes(Math.ceil(length / 2))
+    .toString('hex')
+    .slice(0, length);
+};
+
+
 

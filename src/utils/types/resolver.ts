@@ -42,3 +42,8 @@ export type userProperties = {
     subject: string;
     html: any;
   };
+
+  export type deleteProps = {
+    thisId: string
+    imgId: string
+  }

@@ -3,6 +3,7 @@ import base from "../../../db/base";
 import { Types } from "mongoose";
 import { userProperties } from "../../../utils/types/resolver";
 import { v2 as cloudinary } from "cloudinary";
+import { pubsub } from "../../resolver";
 
 base();
 
@@ -59,6 +60,10 @@ export const updateUser = async (parent: any, input: userProperties) => {
     });
 
     await user.save();
+
+  //   pubsub.publish('USER_UPDATED', {
+  //     user,
+  // })
 
     return {
       success: true,
