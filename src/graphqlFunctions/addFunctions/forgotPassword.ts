@@ -1,10 +1,10 @@
-import { User } from "../../../models/user";
-import base from "../../../db/base";
-import { response } from "../../../utils/response";
+import { User } from "../../models/user";
+import base from "../../db/base";
+import { response } from "../../utils/response";
 import { authenticator, totp, hotp } from "otplib";
 import { uuid } from "uuidv4";
-import { harsh } from "../../../utils/utilsFunction";
-import { mailer } from "../../../utils/mailer";
+import { harsh } from "../../utils/utilsFunction";
+import { mailer } from "../../utils/mailer";
 base();
 
 export const forgotPassword = async (parent: any, input: any) => {

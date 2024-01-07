@@ -1,10 +1,10 @@
-import { User } from "../../../models/user";
-import base from "../../../db/base";
-import { userProperties } from "../../../utils/types/resolver";
-import { response } from "../../../utils/response";
+import { User } from "../../models/user";
+import base from "../../db/base";
+import { userProperties } from "../../utils/types/resolver";
+import { response } from "../../utils/response";
 base();
 
-export const createUser = async (parent: any, input: userProperties) => {
+export const registerUser = async (parent: any, input: userProperties) => {
   const { firstName, lastName, email, password } = input;
 
   try {

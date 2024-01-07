@@ -1,6 +1,6 @@
-import { User } from "../../../models/user";
-import base from "../../../db/base";
-import { response } from "../../../utils/response";
+import { User } from "../../models/user";
+import base from "../../db/base";
+import { response } from "../../utils/response";
 
 base();
 

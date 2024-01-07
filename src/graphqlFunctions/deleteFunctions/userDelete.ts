@@ -9,7 +9,7 @@ cloudinary.config({
   api_secret: process.env.API_SECRET,
 })
 
-export const deleteModel = async (parent: any, input: any, context: any) => {
+export const deleteUser = async (parent: any, input: any, context: any) => {
   if (context.user === 'unauthorized') return {}
   const id = input
 
@@ -19,6 +19,7 @@ export const deleteModel = async (parent: any, input: any, context: any) => {
     }
 
     if (id?.type === 'user') {
+      if(id?.authorId  === id?.thisId) return { status: 400, message: 'You are not allowed to delete your account until you transfer your role to another admin.' }
       const user = await User.findOne({ _id: id?.authorId })
       if (!user) return { status: 404, message: 'User not found' }
       if (user.role !== 'Super Admin')

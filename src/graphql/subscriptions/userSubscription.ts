@@ -1,4 +1,4 @@
-import { pubsub } from "../resolver";
+import { pubsub } from "../mainResolver";
 
 
 

@@ -1,8 +1,8 @@
-import { User } from "../../../models/user";
+import { User } from "../../models/user";
 import bcrypt from "bcryptjs";
 import { uuid } from "uuidv4";
-import base from "../../../db/base";
-import { response } from "../../../utils/response";
+import base from "../../db/base";
+import { response } from "../../utils/response";
 base();
 
 export const changePassword = async (parent: any, input: any) => {

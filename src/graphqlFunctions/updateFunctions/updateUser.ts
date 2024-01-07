@@ -1,9 +1,9 @@
-import { User } from "../../../models/user";
-import base from "../../../db/base";
+import { User } from "../../models/user";
+import base from "../../db/base";
 import { Types } from "mongoose";
-import { userProperties } from "../../../utils/types/resolver";
+import { userProperties } from "../../utils/types/resolver";
 import { v2 as cloudinary } from "cloudinary";
-import { pubsub } from "../../resolver";
+import { pubsub } from "../../graphql/mainResolver";
 
 base();
 
@@ -13,7 +13,11 @@ cloudinary.config({
   api_secret: process.env.API_SECRET,
 });
 
-export const updateUser = async (parent: any, input: userProperties) => {
+export const updateUser = async (parent: any, input: userProperties, context:any) => {
+  if (context.user === "unauthorized") {
+    return {}
+  }
+  
   const {
     id,
     firstName,
