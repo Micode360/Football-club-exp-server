@@ -7,7 +7,7 @@ import { authorized } from "../graphqlFunctions/readFunctions/authorizeAccess";
 import { registerUser } from "../graphqlFunctions/addFunctions/register";
 import { login } from "../graphqlFunctions/addFunctions/login";
 import { forgotPassword } from "../graphqlFunctions/addFunctions/forgotPassword";
-import { changePassword } from "../graphqlFunctions/addFunctions/changePassword";
+import { changePassword } from "../graphqlFunctions/updateFunctions/changePassword";
 import { updateUser } from "../graphqlFunctions/updateFunctions/updateUser";
 import { userProperties, loginProperties, forgetPasswordProps, changePasswordProps, deleteProps } from "../utils/types/resolver";
 

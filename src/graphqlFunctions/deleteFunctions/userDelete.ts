@@ -15,14 +15,24 @@ export const deleteUser = async (parent: any, input: any, context: any) => {
 
   try {
     if (!id?.imgId || id?.imgId !== '') {
+      console.log("deleting image");
       cloudinary.uploader.destroy(id?.imgId)
     }
 
     if (id?.type === 'user') {
-      if(id?.authorId  === id?.thisId) return { status: 400, message: 'You are not allowed to delete your account until you transfer your role to another admin.' }
       const user = await User.findOne({ _id: id?.authorId })
+
+
       if (!user) return { status: 404, message: 'User not found' }
-      if (user.role !== 'Super Admin')
+
+      if (id?.authorId === id?.thisId && user.role === 'Super Admin')
+        return {
+          status: 400,
+          message:
+            'You are not allowed to delete your account until you transfer your role to another admin.',
+        }
+
+      if (user.role !== 'Super Admin' && id?.authorId !== id?.thisId)
         return { status: 400, message: 'You are not authorized to delete users' }
     }
 
@@ -32,7 +42,7 @@ export const deleteUser = async (parent: any, input: any, context: any) => {
       return { status: 400, message: 'Invalid id' }
     }
 
-    return { status: 200, message: 'Successfully deleted' }
+    return { status: 200, message: id?.authorId === id?.thisId? 'Account deleted' : 'Successfully deleted' }
   } catch (error: any) {
     return { status: 400, message: error.message }
   }

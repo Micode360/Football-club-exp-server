@@ -2,6 +2,7 @@
 
 export type userProperties = {
     id: String;
+    userId?:string;
     firstName: String;
     lastName: String;
     email: String;

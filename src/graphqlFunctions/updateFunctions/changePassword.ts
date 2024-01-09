@@ -35,7 +35,6 @@ export const changePassword = async (parent: any, input: any) => {
       message: "new password has been created",
     };
   } catch (err: any) {
-    console.error(err);
     return response(false, 401, "Internal Server Error");
   }
 };

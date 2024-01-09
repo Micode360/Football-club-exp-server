@@ -50,6 +50,11 @@ export const typeDefs = gql`
     imgUrl: String
   }
 
+  input useId {
+    id:String
+    userId: String
+}
+
   input UserInput {
     id: String
     firstName: String
@@ -77,6 +82,7 @@ export const typeDefs = gql`
   input ChangePassword {
     id: String!
     password: String!
+    currentPassword: String
   }
 
   
@@ -90,7 +96,7 @@ export const typeDefs = gql`
     thisId: String
     imgId: String
   }
-  
+
   type Query {
     user: User
     users: [User]
@@ -105,6 +111,8 @@ export const typeDefs = gql`
     UpdateUser(input: UserInput!): Response
     PostUser(input: PostInput!): Response
     DeleteUser(input: Delete!): Response
+    TransferRole(input: useId!): Response
+    UpdatePassword(input: ChangePassword!): Response
   }
 
   type Subscription {

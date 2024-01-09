@@ -1,4 +1,4 @@
-import { changePassword } from "../graphqlFunctions/addFunctions/changePassword";
+import { changePassword } from "../graphqlFunctions/updateFunctions/changePassword";
 import { forgotPassword } from "../graphqlFunctions/addFunctions/forgotPassword";
 import { login } from "../graphqlFunctions/addFunctions/login";
 import { registerUser } from "../graphqlFunctions/addFunctions/register";
