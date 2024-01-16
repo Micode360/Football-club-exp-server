@@ -48,3 +48,30 @@ export type userProperties = {
     thisId: string
     imgId: string
   }
+
+
+  export type leagueProps =  {
+    id: string
+    leagueId?:string
+    name: string
+    logo?: {
+      publicId: string;
+      imgUrl: string;
+    }
+    country?: {
+      imgPath: string;
+      value: string;
+    },
+    description?: string
+    website?: string
+    socials?: {
+      facebook?:string
+      xlink?: string
+      youtube?: string
+      instagram?: string
+    },
+    backgroundGradient?: {
+      fromColor?: string
+      toColor?: string
+    }
+  }

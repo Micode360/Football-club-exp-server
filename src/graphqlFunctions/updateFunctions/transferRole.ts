@@ -28,7 +28,6 @@ export const transferRole = async (parent: any, input: userProperties, context: 
         success: false,
         status: 404,
         message: 'User not found',
-        value: null,
       }
     }
 

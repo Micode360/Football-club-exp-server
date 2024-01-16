@@ -15,7 +15,6 @@ export const deleteUser = async (parent: any, input: any, context: any) => {
 
   try {
     if (!id?.imgId || id?.imgId !== '') {
-      console.log("deleting image");
       cloudinary.uploader.destroy(id?.imgId)
     }
 
