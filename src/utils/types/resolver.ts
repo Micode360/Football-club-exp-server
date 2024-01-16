@@ -2,6 +2,7 @@
 
 export type userProperties = {
     id: String;
+    userId?:string;
     firstName: String;
     lastName: String;
     email: String;
@@ -42,3 +43,35 @@ export type userProperties = {
     subject: string;
     html: any;
   };
+
+  export type deleteProps = {
+    thisId: string
+    imgId: string
+  }
+
+
+  export type leagueProps =  {
+    id: string
+    leagueId?:string
+    name: string
+    logo?: {
+      publicId: string;
+      imgUrl: string;
+    }
+    country?: {
+      imgPath: string;
+      value: string;
+    },
+    description?: string
+    website?: string
+    socials?: {
+      facebook?:string
+      xlink?: string
+      youtube?: string
+      instagram?: string
+    },
+    backgroundGradient?: {
+      fromColor?: string
+      toColor?: string
+    }
+  }
