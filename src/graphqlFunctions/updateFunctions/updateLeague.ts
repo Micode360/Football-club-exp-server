@@ -21,7 +21,7 @@ export const updateLeague = async (parent: any, input:leagueProps, context:any) 
   
   const {
     id,
-    leagueId,
+    userId,
     name,
     logo,
     country,
@@ -31,19 +31,8 @@ export const updateLeague = async (parent: any, input:leagueProps, context:any) 
     backgroundGradient
   } = input;
 
-  console.log({
-    id,
-    name,
-    logo,
-    country,
-    description,
-    website,
-    socials,
-    backgroundGradient
-  }, "edit league");
-
   try {
-    const user = await User.findOne({ _id: new Types.ObjectId(id) });
+    const user = await User.findOne({ _id: new Types.ObjectId(userId) });
 
     if (!user) {
       return {
@@ -61,7 +50,7 @@ export const updateLeague = async (parent: any, input:leagueProps, context:any) 
         message: "You are not authorized to update leagues"
       };
     } else {
-      const league: any = await League.findOne({ _id: leagueId });
+      const league: any = await League.findOne({ _id: id });
     
       const leagueUpdate: any = {
         id,
