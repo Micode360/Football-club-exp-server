@@ -51,8 +51,8 @@ export type userProperties = {
 
 
   export type leagueProps =  {
-    id: string
-    leagueId?:string
+    id?: string
+    userId?:string
     name: string
     logo?: {
       publicId: string;

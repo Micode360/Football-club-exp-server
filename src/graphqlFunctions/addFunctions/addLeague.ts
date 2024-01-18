@@ -9,7 +9,7 @@ export const addLeague = async (parent: any, input: leagueProps, context: any) =
   if (context.user === 'unauthorized') return response(false, 409, 'unathorized to access')
 
   const {
-    id,
+    userId,
     name,
     logo,
     country,
@@ -22,7 +22,6 @@ export const addLeague = async (parent: any, input: leagueProps, context: any) =
   //League object to save in database
 
   const league = {
-    id,
     name,
     logo: {
       publicId: logo?.publicId,
@@ -38,7 +37,7 @@ export const addLeague = async (parent: any, input: leagueProps, context: any) =
     backgroundGradient
   }
   try {
-    const user = await User.findOne({ _id: id })
+    const user = await User.findOne({ _id: userId })
 
     if (user.role === 'Super Admin') {
       const newLeague = new League(league)
@@ -49,6 +48,7 @@ export const addLeague = async (parent: any, input: leagueProps, context: any) =
         success: true,
         status: 200,
         message: 'League Added',
+        value: newLeague?._id
       }
     } else {
       return response(false, 409, 'Something went wrong')

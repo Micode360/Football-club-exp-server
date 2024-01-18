@@ -38,7 +38,7 @@ type Leagues {
 
   input LeagueInput {
     id: String
-    leagueId: String
+    userId: String
     name: String
     logo: ProfilePic
     country: CountryInput
