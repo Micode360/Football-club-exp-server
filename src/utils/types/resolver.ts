@@ -75,3 +75,19 @@ export type userProperties = {
       toColor?: string
     }
   }
+
+  export type newsProps = {
+    id?:string;
+    userId?: string;
+    authorIds: Array<string>;
+    title: string;
+    coverImage: {
+      publicId: string;
+      imgUrl: string;
+    };
+    description: string;
+    author:string;
+    league: string;
+    categories: Array<string>;
+    content: string;
+  }
