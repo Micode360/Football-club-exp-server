@@ -1,9 +1,7 @@
-import { userDefs } from "./schemas/userSchema";
-import { authDefs } from "./schemas/authSchema";
-import { globalDefs } from "./schemas/globalSchemas";
-import { leagueDefs } from "./schemas/leagueSchema";
-import { newsDefs } from "./schemas/newsSchema";
+import { userDefs } from './schemas/userSchema'
+import { authDefs } from './schemas/authSchema'
+import { globalDefs } from './schemas/globalSchemas'
+import { leagueDefs } from './schemas/leagueSchema'
+import { newsDefs } from './schemas/newsSchema'
 
-
-
-export const typeDefs = [globalDefs,authDefs,userDefs, leagueDefs, newsDefs];
+export const typeDefs = [globalDefs, authDefs, userDefs, leagueDefs, newsDefs]

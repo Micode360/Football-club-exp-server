@@ -7,6 +7,11 @@ const NewsSchema = new Schema(
       type: String,
       required: [true, "News name required"],
     },
+    authorIds: [{
+      type: Schema.Types.ObjectId,
+      ref: 'User', 
+      required: true,
+    }],
     description: {
         type: String,
         required: false,

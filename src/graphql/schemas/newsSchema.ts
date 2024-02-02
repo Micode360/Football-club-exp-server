@@ -7,14 +7,17 @@ type News {
   coverImage: ImageQuery
   description: String
   author: String
+  authorIds: [User] 
   league: String
   categories: [String]
   content: String
+  createdAt: String
 }
 
   input NewsInput {
     id: String
     userId: String
+    authorIds: [String] 
     title: String!
     coverImage: ProfilePic
     description: String

@@ -7,6 +7,6 @@ export const getNews = async (parent: any, args: any, contextValue: any) => {
     return []
   }
 
-  const news = await News.find();
+  const news = await News.find().populate('authorIds', 'firstName lastName profilePic');
   return news;
 };

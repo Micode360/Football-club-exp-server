@@ -32,11 +32,17 @@ export const globalDefs = gql`
     userId: String
   }
 
+  input multipleDeleteIdProps {
+    id: String
+    imgId: String
+  }
+
   input Delete  {
     authorId: String
     type: String
     thisId: String
     imgId: String
+    arrIds: [multipleDeleteIdProps]
   }
 
   input UserInput {
