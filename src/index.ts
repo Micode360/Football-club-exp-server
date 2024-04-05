@@ -34,59 +34,9 @@ const app: Application = express()
 const port = process.env.PORT || 8000
 const httpServer = http.createServer(app)
 
-
-
-
-const MainServer = async () => {
-  const schema = makeExecutableSchema({ typeDefs, resolvers })
-
-     const wsServer = new WebSocketServer({
-      server: httpServer,
-      path: '/graphql',
-    });
-  
-
-    const serverCleanup = useServer({ schema }, wsServer);
-
-  const server = new ApolloServer({
-    schema,
-    introspection: true,
-    plugins: [
-      ApolloServerPluginDrainHttpServer({ httpServer }),
-      {
-        async serverWillStart() {
-          return {
-            async drainServer() {
-              await serverCleanup.dispose();
-            },
-          };
-        },
-      },
-    ],
-  })
-
-
-  await server.start()
-
-  app.use(express.json())
-  app.use(CookieParser())
-
-  app.use(
-    cors({
-      credentials: true,
-      origin: 'http://localhost:3000',
-      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-      allowedHeaders:
-        'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization',
-    }),
-  )
-
-  app.use(express.urlencoded({ extended: true }))
-  app.use(
-    '/graphql',
-    expressMiddleware(server, {
-      context: async ({ req, res }: ExpressContextFunctionArgument) => {
-        const token = req.headers.authorization || "";
+// verify token
+const Verify = async (req:any, res:any) => {
+  const token = req.headers.authorization || "";
         const bearerToken = token.replace("Bearer ", "");
         const refreshToken = req.cookies.refreshtkn || "";
         const expiryDate = 7 * 24 * 60 * 60 * 1000;
@@ -129,11 +79,86 @@ const MainServer = async () => {
             return { user: "unauthorized", status: "public", req, res };
           }
         }
+}
+
+
+
+
+const MainServer = async () => {
+  const schema = makeExecutableSchema({ typeDefs, resolvers })
+
+     const wsServer = new WebSocketServer({
+      server: httpServer,
+      path: '/graphql',
+    });
+  
+
+    const serverCleanup = useServer({ 
+      schema, 
+      context:async (ctx, msg, args) => {
+        try{
+          let user:User | null;
+          let token:any = await ctx?.connectionParams?.authToken || "";
+
+          const decodedToken:any = await jwt.verify(
+            token,
+            process.env.JWT_SECRET as string
+          );
+      
+          user = decodedToken.id;
+  
+          return { ctx, msg, args, userId: decodedToken }
+        }catch(e) {
+         // console.log(e, "ERROR FROM USESERVER")
+          return  {ctx, msg, args};
+        }
+    } 
+  }, wsServer);
+
+  const server = new ApolloServer({
+    schema,
+    introspection: true,
+    plugins: [
+      ApolloServerPluginDrainHttpServer({ httpServer }),
+      {
+        async serverWillStart() {
+          return {
+            async drainServer() {
+              await serverCleanup.dispose();
+            },
+          };
+        },
+      },
+    ],
+  })
+
+
+  await server.start()
+
+  app.use(express.json())
+  app.use(CookieParser())
+
+  app.use(
+    cors({
+      credentials: true,
+      origin: 'http://localhost:3000',
+      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+      allowedHeaders:
+        'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization',
+    }),
+  )
+
+  app.use(express.urlencoded({ extended: true }))
+  app.use(
+    '/graphql',
+    expressMiddleware(server, {
+      context: async ({ req, res }: ExpressContextFunctionArgument) => {
+        return await Verify(req, res);
       },
     }),
   )
 
-
+  //one route
   app.get('/', (req: Request, res: Response) => {
     res.send(HomePage);
   })

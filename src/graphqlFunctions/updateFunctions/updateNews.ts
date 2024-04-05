@@ -45,7 +45,9 @@ export const updateNews = async (parent: any, input:newsProps, context:any) => {
       };
     }
 
-    if (user.role !== "Super Admin") {
+    console.log(news.authorIds.includes(user._id), "author Id?")
+
+    if (user.role !== "Super Admin" || !news.authorIds.includes(user._id)) {
       return {
         success: false,
         status: 403,
@@ -77,6 +79,7 @@ export const updateNews = async (parent: any, input:newsProps, context:any) => {
       message: "News updated successfully",
     };
   } catch (error: any) {
+    console.log(error,"error from news update server");
     throw new Error("Error updating user: " + error.message);
   }
 };

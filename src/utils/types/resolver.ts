@@ -77,9 +77,11 @@ export type userProperties = {
   }
 
   export type newsProps = {
+    type:string;
     id?:string;
     userId?: string;
     authorIds: Array<string>;
+    authorId: string;
     title: string;
     coverImage: {
       publicId: string;
@@ -90,4 +92,13 @@ export type userProperties = {
     league: string;
     categories: Array<string>;
     content: string;
+  }
+
+  export type notificationProps = {
+    type:string;
+    recipient: string;
+    listId?: string;
+    sender?:string;
+    description?:string;
+    action?:string;
   }
