@@ -1,19 +1,21 @@
-# Use the official Node.js image
 FROM node:16
 
-# Set the working directory
+# Set working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json
-COPY package*.json ./
+# Copy package.json and yarn.lock
+COPY package.json yarn.lock ./
 
 # Install dependencies
-RUN npm install
+RUN yarn install
 
 # Copy the rest of the application code
 COPY . .
 
-# Expose the port the app runs on
+# Build the project (if needed)
+RUN yarn build
+
+# Expose the port
 EXPOSE 5000
 
 # Start the application
