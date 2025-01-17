@@ -8,7 +8,6 @@ export const deleteNotifications = async (parent: any, input: notificationProps,
   if (context.user === 'unauthorized') return response(false, 409, 'unathorized to access')
 
   const { type, recipient, listId } = input;
-  console.log({ type, recipient, listId }, "delete notification");
   try {
     const selectedNotification = await Notification.findOne({ recipient })
     if (type === 'single') {

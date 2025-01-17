@@ -1,5 +1,5 @@
 import express, { Express, Request, Response, Application } from 'express'
-import cors from 'cors'
+import cors, { CorsOptions } from 'cors'
 import dotenv from 'dotenv'
 import base from './db/base'
 import CookieParser from 'cookie-parser'
@@ -143,9 +143,10 @@ const MainServer = async () => {
       credentials: true,
       origin: 'http://localhost:3000',
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+      sameSite: 'none',
       allowedHeaders:
         'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization',
-    }),
+    }as Partial<CorsOptions>),
   )
 
   app.use(express.urlencoded({ extended: true }))

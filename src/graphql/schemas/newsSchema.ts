@@ -51,7 +51,7 @@ export const newsDefs = gql`
     }
 
     type Query {
-      news: [News]
+      news(limit:Int): [News]
       newsHeadlines: NewsHeadlineResult
     }
 
@@ -60,8 +60,12 @@ export const newsDefs = gql`
       AddNews(input: NewsInput!): Response
       EditNews(input: NewsInput!): Response
       DeleteNews(input: Delete!): Response
+      RemoveAuthor(input: Delete!): Response
       HandleAccess(input: HandleAccess!): Response
       UpdateNewsHeadlines(input: NewsHeadline!): Response
     }
 
+    type Subscription {
+      newsUpdate: News
+    }
 `;

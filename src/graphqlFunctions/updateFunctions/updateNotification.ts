@@ -14,8 +14,6 @@ export const updateNotification = async (parent: any, input: notificationProps, 
 
   const { sender, type, description, action, recipient } = input
 
-  console.log({ sender, type, description, action, recipient }, "log")
-
   try {
     const notification = await Notification.findOne({ recipient })
     const senderInfo = await User.findOne({ _id: sender })
@@ -51,12 +49,6 @@ export const updateNotification = async (parent: any, input: notificationProps, 
 
       const channel = `NEW_NOTIFICATION_${recipient}`;
       pubsub.publish(channel, { newNotification: incomingMessage });
-
-   //console.log(notification.list[0], "the notification")
-    console.log({
-      recipient,
-      user: context.user
-    })
 
     return {
       success: true,

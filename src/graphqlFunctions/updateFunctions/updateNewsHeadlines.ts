@@ -1,7 +1,6 @@
 import { User } from '../../models/user'
 import { NewsHeadline } from '../../models/newsHeadline'
 import base from '../../db/base'
-import { leagueProps } from '../../utils/types/resolver'
 import { response } from '../../utils/response'
 base()
 
