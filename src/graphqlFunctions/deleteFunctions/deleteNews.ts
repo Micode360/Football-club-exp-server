@@ -2,7 +2,7 @@ import { User } from '../../models/user'
 import { News } from '../../models/news'
 import base from '../../db/base'
 import { v2 as cloudinary } from 'cloudinary'
-import { ApolloServerPluginDrainHttpServer } from '@apollo/server/dist/esm/plugin/drainHttpServer'
+import { NewsHeadline } from '../../models/newsHeadline'
 base()
 
 cloudinary.config({
@@ -15,22 +15,22 @@ export const deleteNews = async (parent: any, input: any, context: any) => {
   if (context.user === 'unauthorized') return {}
   const id = input
 
-
   try {
     const user = await User.findOne({ _id: id?.authorId })
     if (!user) return { status: 404, message: 'User not found' }
 
+    //For multiple deletion
     if (id.arrIds.length > 0) {
       if (!id.arrIds) {
-        return { success: false, status: 400, message: 'arrIds is not defined' };
+        return { success: false, status: 400, message: 'arrIds is not defined' }
       }
       const deletionPromises = [...id.arrIds].forEach(async ({ id, imgId }: any) => {
         const news = await News.findOne({ _id: id })
-
         if (
           (user.role !== 'Super Admin' && news.authorIds.includes(user?._id)) ||
           user.role === 'Super Admin'
         ) {
+          console.log("deletion running")
           if (imgId || imgId !== '') {
             cloudinary.uploader.destroy(imgId)
           }
@@ -39,6 +39,19 @@ export const deleteNews = async (parent: any, input: any, context: any) => {
           if (!deleteModel) {
             return { status: 400, message: 'Invalid id' }
           }
+
+          if(id?.headLineId) {
+          // Multiple Deletion from headline news starts here
+          const foundHeadlineNews = await NewsHeadline.findOne({ _id: id?.headLineId })
+          const headlines = foundHeadlineNews.headlines.filter((news: any) => news?.id !== id)
+
+          foundHeadlineNews.headlines = headlines
+          foundHeadlineNews.markModified('headlines')
+
+          foundHeadlineNews.save()
+          //Multiple Deletion from headline news ends here.
+          }
+          
         } else {
           return {
             success: false,
@@ -65,6 +78,16 @@ export const deleteNews = async (parent: any, input: any, context: any) => {
         if (!deleteModel) {
           return { status: 400, message: 'Invalid id' }
         }
+
+        //Single Deletion from headline news starts here
+        const foundHeadlineNews = await NewsHeadline.findOne({ _id: id?.headLineId })
+        const headlines = [...foundHeadlineNews.headlines].filter((news: any) => news?.id !== id.thisId)
+
+        foundHeadlineNews.headlines = headlines
+        foundHeadlineNews.markModified('headlines')
+
+        foundHeadlineNews.save()
+        //Single Deletion from headlnie news ends here.
       } else {
         return {
           success: false,
@@ -76,7 +99,7 @@ export const deleteNews = async (parent: any, input: any, context: any) => {
       return { success: true, status: 200, message: 'News Successfully deleted' }
     }
   } catch (error: any) {
-    console.error(error, "error");
+    console.error(error, 'error')
     return { success: false, status: 400, message: error.message }
   }
 }

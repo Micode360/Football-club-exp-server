@@ -42,6 +42,7 @@ export const globalDefs = gql`
     type: String
     thisId: String
     imgId: String
+    headLineId: String
     arrIds: [multipleDeleteIdProps]
   }
 

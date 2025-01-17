@@ -1,4 +1,3 @@
-import { User } from '../../models/user';
 import { News } from '../../models/news';
 import base from '../../db/base'
 import { newsProps } from '../../utils/types/resolver'
@@ -10,7 +9,6 @@ export const addNews = async (parent: any, input: newsProps, context: any) => {
 
   const {
     authorIds,
-    userId,
     title,
     coverImage,
     description,
@@ -33,7 +31,6 @@ export const addNews = async (parent: any, input: newsProps, context: any) => {
     content
   }
 
-  console.log(news, "news")
   try {
    const newNews = new News(news)
 

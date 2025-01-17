@@ -4,7 +4,7 @@ import base from "../../db/base";
 import { Types } from "mongoose";
 import { newsProps } from "../../utils/types/resolver";
 import { v2 as cloudinary } from "cloudinary";
-import { pubsub } from "../../graphql/mainResolver";
+import { pubsub } from '../../graphql/subscriptions/pubsub';
 
 base();
 
@@ -32,6 +32,19 @@ export const updateNews = async (parent: any, input:newsProps, context:any) => {
     content
   } = input
 
+    
+  const newsUpdate: any ={
+    authorIds,
+    userId,
+    title,
+    coverImage,
+    description,
+    author,
+    league,
+    categories, 
+    content
+  };
+
   try {
     const user = await User.findOne({ _id: new Types.ObjectId(userId) });
     const news = await News.findOne({ _id: id });
@@ -45,38 +58,33 @@ export const updateNews = async (parent: any, input:newsProps, context:any) => {
       };
     }
 
-    if (user.role !== "Super Admin") {
+    if (
+      (user.role !== 'Super Admin' && news.authorIds.includes(user?._id)) ||
+        user.role === 'Super Admin'
+    ){
+      news.set(newsUpdate);
+      await news.save();
+
+      const channel = `NEWS_UPDATE`;
+      pubsub.publish(channel, { newsUpdate: {...newsUpdate, id, createdAt: news.createdAt } });
+    } else {
       return {
         success: false,
         status: 403,
         message: "You are not authorized to update news"
       };
-    } else {
-    
-      const newsUpdate: any ={
-        authorIds,
-        userId,
-        title,
-        coverImage,
-        description,
-        author,
-        league,
-        categories, 
-        content
-      };
-    
-      news.set(newsUpdate);
-    
-      await news.save();
     }
+
+
     
-    
+
     return {
       success: true,
       status: 200,
       message: "News updated successfully",
     };
   } catch (error: any) {
+    console.log(error,"error from news update server");
     throw new Error("Error updating user: " + error.message);
   }
 };

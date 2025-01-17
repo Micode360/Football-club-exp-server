@@ -1,40 +1,71 @@
 import { gql } from "apollo-server-micro";
 
 export const newsDefs = gql`
-type News {
-  id: String
-  title: String
-  coverImage: ImageQuery
-  description: String
-  author: String
-  authorIds: [User] 
-  league: String
-  categories: [String]
-  content: String
-  createdAt: String
-}
-
-  input NewsInput {
+  type News {
     id: String
-    userId: String
-    authorIds: [String] 
-    title: String!
-    coverImage: ProfilePic
+    sn: ID
+    title: String
+    coverImage: ImageQuery
     description: String
     author: String
-    league: String!
-    categories: [String]! 
+    authorIds: [User] 
+    league: String
+    categories: [String]
     content: String
+    createdAt: String
   }
 
-  type Query {
-    news: [News]
+  type NewsHeadlineResult {
+    id: String
+    headlines: [News]
   }
 
-  type Mutation {
-    AddNews(input: NewsInput!): Response
-    EditNews(input: NewsInput!): Response
-    DeleteNews(input: Delete!): Response
-  }
 
+    input NewsInput {
+      id: String
+      sn: ID
+      userId: String
+      authorIds: [String] 
+      title: String!
+      coverImage: ProfilePic
+      description: String
+      author: String
+      league: String!
+      categories: [String]! 
+      content: String
+      createdAt: String
+    }
+
+    input NewsHeadline {
+      type: String
+      userId: String
+      headlineId: String
+      headlines: [NewsInput]
+    }
+
+    input HandleAccess{
+      type: String
+      id: String
+      userId: String
+      authorId: String
+    }
+
+    type Query {
+      news(limit:Int): [News]
+      newsHeadlines: NewsHeadlineResult
+    }
+
+    
+    type Mutation {
+      AddNews(input: NewsInput!): Response
+      EditNews(input: NewsInput!): Response
+      DeleteNews(input: Delete!): Response
+      RemoveAuthor(input: Delete!): Response
+      HandleAccess(input: HandleAccess!): Response
+      UpdateNewsHeadlines(input: NewsHeadline!): Response
+    }
+
+    type Subscription {
+      newsUpdate: News
+    }
 `;

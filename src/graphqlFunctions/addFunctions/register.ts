@@ -1,4 +1,5 @@
 import { User } from "../../models/user";
+import { Notification } from "../../models/notification";
 import base from "../../db/base";
 import { userProperties } from "../../utils/types/resolver";
 import { response } from "../../utils/response";
@@ -25,6 +26,16 @@ export const registerUser = async (parent: any, input: userProperties) => {
       });
 
       await newUser.save();
+
+      //Creating new notification
+      const newNotification = new Notification({
+        recipient: newUser._id,
+        list: []
+      })
+
+      await newNotification.save()
+
+      
 
       return response(true, 200, "Registration successful");
     } else {
