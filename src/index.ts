@@ -1,4 +1,4 @@
-import express, { Express, Request, Response, Application } from 'express'
+import express, { Request, Response, Application } from 'express'
 import cors, { CorsOptions } from 'cors'
 import dotenv from 'dotenv'
 import base from './db/base'
@@ -30,7 +30,7 @@ base()
 dotenv.config()
 
 const app: Application = express()
-//app.setMaxListeners(50);
+
 const port = process.env.PORT || 8000
 const httpServer = http.createServer(app)
 
