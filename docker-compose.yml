@@ -16,7 +16,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
+      - /root/web_applications/nginx-configs/sites-enabled/manage-theleague.conf:/etc/nginx/conf.d/manage-theleague.conf
     depends_on:
       - server
     
