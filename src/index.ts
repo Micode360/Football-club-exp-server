@@ -31,7 +31,7 @@ dotenv.config()
 
 const app: Application = express()
 
-const port = process.env.PORT || 8000
+const port = parseInt(process.env.PORT as string, 10) || 8000
 const httpServer = http.createServer(app)
 
 // verify token
@@ -164,9 +164,9 @@ const MainServer = async () => {
     res.send(HomePage);
   })
 
-  httpServer.listen(port, () => {
-    console.log(`🚀 Express Server is Fired at http://localhost:${port}`)
-    console.log(`🚀 Graph Ql Server is Fire at http://localhost:${port}/graphql`)
+  httpServer.listen(port, '0.0.0.0', () => {
+    console.log(`🚀 Express Server is Fired at http://0.0.0.0:${port}`)
+    console.log(`🚀 Graph Ql Server is Fire at http://0.0.0.0:${port}/graphql`)
   })
 }
 
