@@ -17,8 +17,10 @@ services:
     container_name: football-club-nginx
     ports:
       - "80:80"
+      - "443:443"  
     volumes:
       - /root/web_applications/nginx-configs/sites-enabled/manage-theleague.conf:/etc/nginx/conf.d/manage-theleague.conf
+      - /etc/letsencrypt:/etc/letsencrypt  # Mount Let's Encrypt certificates
     depends_on:
       - server
     networks:
