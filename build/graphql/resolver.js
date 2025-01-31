@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.resolvers = void 0;
+const lodash_1 = require("lodash");
+const userResolver_1 = require("./resolvers/userResolver");
+const authResolver_1 = require("./resolvers/authResolver");
+const leagueResolver_1 = require("./resolvers/leagueResolver");
+const newsResolver_1 = require("./resolvers/newsResolver");
+const notificationResolver_1 = require("./resolvers/notificationResolver");
+exports.resolvers = (0, lodash_1.merge)(userResolver_1.userResolver, authResolver_1.authResolvers, leagueResolver_1.leagueResolver, newsResolver_1.newsResolver, notificationResolver_1.notificationResolver);
