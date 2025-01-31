@@ -141,7 +141,7 @@ const MainServer = async () => {
   app.use(
     cors({
       credentials: true,
-      origin: 'http://localhost:3000',
+      origin: process.env.PATH as string,
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
       sameSite: 'none',
       allowedHeaders:
