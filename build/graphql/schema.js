@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.typeDefs = void 0;
+const userSchema_1 = require("./schemas/userSchema");
+const authSchema_1 = require("./schemas/authSchema");
+const globalSchemas_1 = require("./schemas/globalSchemas");
+const leagueSchema_1 = require("./schemas/leagueSchema");
+const newsSchema_1 = require("./schemas/newsSchema");
+const notificationSchema_1 = require("./schemas/notificationSchema");
+exports.typeDefs = [globalSchemas_1.globalDefs, authSchema_1.authDefs, userSchema_1.userDefs, leagueSchema_1.leagueDefs, newsSchema_1.newsDefs, notificationSchema_1.notificationDefs];
