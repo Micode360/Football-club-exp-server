@@ -137,11 +137,12 @@ const MainServer = async () => {
 
   app.use(express.json())
   app.use(CookieParser())
+ 
 
   app.use(
     cors({
       credentials: true,
-      origin: 'https://theleaguemicode.netlify.app',
+      origin: process.env.FRONTEND_URL,
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
       sameSite: 'none',
       allowedHeaders:
