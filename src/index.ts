@@ -141,7 +141,7 @@ const MainServer = async () => {
   app.use(
     cors({
       credentials: true,
-      origin: process.env.PATH as string,
+      origin: 'https://theleaguemicode.netlify.app',
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
       sameSite: 'none',
       allowedHeaders:

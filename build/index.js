@@ -115,7 +115,7 @@ const MainServer = () => __awaiter(void 0, void 0, void 0, function* () {
     app.use((0, cookie_parser_1.default)());
     app.use((0, cors_1.default)({
         credentials: true,
-        origin: process.env.PATH,
+        origin: 'https://theleaguemicode.netlify.app',
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
         sameSite: 'none',
         allowedHeaders: 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization',
