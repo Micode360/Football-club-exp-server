@@ -20,46 +20,60 @@ export const deleteNews = async (parent: any, input: any, context: any) => {
     if (!user) return { status: 404, message: 'User not found' }
 
     //For multiple deletion
+    // Multiple deletion section:
     if (id.arrIds.length > 0) {
       if (!id.arrIds) {
         return { success: false, status: 400, message: 'arrIds is not defined' }
       }
-      const deletionPromises = [...id.arrIds].forEach(async ({ id, imgId }: any) => {
-        const news = await News.findOne({ _id: id })
+      console.log(id?.authorId, 'Author')
+
+      // Replace forEach with a for...of loop to await each deletion
+      for (const item of id.arrIds) {
+        const { id: newsId, imgId, headLineId } = item
+        const news = await News.findOne({ _id: newsId })
+        if (!news) {
+          return { success: false, status: 400, message: 'Invalid news id' }
+        }
+
+        // IMPORTANT: Check that the user is authorized for THIS news item.
+        // (Note that user is being fetched by id?.authorId as before.)
         if (
-          (user.role !== 'Super Admin' && news.authorIds.includes(user?._id)) ||
-          user.role === 'Super Admin'
+          !(
+            (user.role !== 'Super Admin' && news.authorIds.includes(user?._id)) ||
+            user.role === 'Super Admin'
+          )
         ) {
-          console.log("deletion running")
-          if (imgId || imgId !== '') {
-            cloudinary.uploader.destroy(imgId)
-          }
-          const deleteModel = await News.findOneAndDelete({ _id: id })
-
-          if (!deleteModel) {
-            return { status: 400, message: 'Invalid id' }
-          }
-
-          if(id?.headLineId) {
-          // Multiple Deletion from headline news starts here
-          const foundHeadlineNews = await NewsHeadline.findOne({ _id: id?.headLineId })
-          const headlines = foundHeadlineNews.headlines.filter((news: any) => news?.id !== id)
-
-          foundHeadlineNews.headlines = headlines
-          foundHeadlineNews.markModified('headlines')
-
-          foundHeadlineNews.save()
-          //Multiple Deletion from headline news ends here.
-          }
-          
-        } else {
           return {
             success: false,
             status: 400,
             message: 'You are not authorized to delete this news.',
           }
         }
-      })
+
+        console.log('deletion running')
+
+        // Make sure to destroy the cloudinary image only if there is a valid imgId
+        if (imgId && imgId !== '') {
+          await cloudinary.uploader.destroy(imgId)
+        }
+
+        const deleteModel = await News.findOneAndDelete({ _id: newsId })
+        if (!deleteModel) {
+          return { status: 400, message: 'Invalid id' }
+        }
+
+        // If there is an associated headline news, update it as before.
+        if (headLineId) {
+          const foundHeadlineNews = await NewsHeadline.findOne({ _id: headLineId })
+          if (foundHeadlineNews) {
+            foundHeadlineNews.headlines = foundHeadlineNews.headlines.filter(
+              (newsItem: any) => newsItem?.id !== newsId,
+            )
+            foundHeadlineNews.markModified('headlines')
+            await foundHeadlineNews.save()
+          }
+        }
+      }
 
       return { success: true, status: 200, message: 'Multiple News Successfully deleted' }
     } else {
@@ -81,7 +95,9 @@ export const deleteNews = async (parent: any, input: any, context: any) => {
 
         //Single Deletion from headline news starts here
         const foundHeadlineNews = await NewsHeadline.findOne({ _id: id?.headLineId })
-        const headlines = [...foundHeadlineNews.headlines].filter((news: any) => news?.id !== id.thisId)
+        const headlines = [...foundHeadlineNews.headlines].filter(
+          (news: any) => news?.id !== id.thisId,
+        )
 
         foundHeadlineNews.headlines = headlines
         foundHeadlineNews.markModified('headlines')

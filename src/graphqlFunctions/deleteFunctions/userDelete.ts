@@ -12,7 +12,6 @@ cloudinary.config({
 export const deleteUser = async (parent: any, input: any, context: any) => {
   if (context.user === 'unauthorized') return {}
   const id = input
-
   try {
     if (!id?.imgId || id?.imgId !== '') {
       cloudinary.uploader.destroy(id?.imgId)
