@@ -142,7 +142,7 @@ const MainServer = async () => {
   app.use(
     cors({
       credentials: true,
-      origin: process.env.FRONTEND_URL,
+      origin:  process.env.FRONTEND_URL,
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
       sameSite: 'none',
       allowedHeaders:
@@ -165,7 +165,8 @@ const MainServer = async () => {
     res.send(HomePage);
   })
 
-  httpServer.listen(port, '0.0.0.0', () => {
+  
+  httpServer.listen(port,'0.0.0.0',() => {
     console.log(`🚀 Express Server is Fired at http://0.0.0.0:${port}`)
     console.log(`🚀 Graph Ql Server is Fire at http://0.0.0.0:${port}/graphql`)
   })
