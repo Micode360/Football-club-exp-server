@@ -7,6 +7,7 @@ export const newsDefs = gql`
     title: String
     coverImage: ImageQuery
     description: String
+    status:String
     author: String
     authorIds: [User] 
     league: String
@@ -26,12 +27,13 @@ export const newsDefs = gql`
       sn: ID
       userId: String
       authorIds: [String] 
-      title: String!
+      title: String
       coverImage: ProfilePic
       description: String
+      status:String
       author: String
-      league: String!
-      categories: [String]! 
+      league: String
+      categories: [String] 
       content: String
       createdAt: String
     }
