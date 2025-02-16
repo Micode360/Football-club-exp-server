@@ -3,7 +3,7 @@ export const notificationMessage = (type: string | undefined, data: any) => {
     case 'request':
       return `<div>
                 <p><span className="text-blue-500 text-md">${data.name}</span> ${data.description}</p>
-            </div>
+              </div>
              `
     case 'user-type':
       return `<div>

@@ -89,6 +89,7 @@ export type userProperties = {
     };
     description: string;
     author:string;
+    status?: string;
     league: string;
     categories: Array<string>;
     content: string;

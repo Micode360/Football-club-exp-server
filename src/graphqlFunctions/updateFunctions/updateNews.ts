@@ -27,6 +27,7 @@ export const updateNews = async (parent: any, input:newsProps, context:any) => {
     coverImage,
     description,
     author,
+    status,
     league,
     categories, 
     content
@@ -62,7 +63,17 @@ export const updateNews = async (parent: any, input:newsProps, context:any) => {
       (user.role !== 'Super Admin' && news.authorIds.includes(user?._id)) ||
         user.role === 'Super Admin'
     ){
-      news.set(newsUpdate);
+      if(status !== ""){
+        news.set(newsUpdate);
+        await news.save();
+
+        return {
+          success: true,
+          status: 200,
+          message: "News status updated successfully",
+        };
+      }
+      news.set({status});
       await news.save();
 
       const channel = `NEWS_UPDATE`;
@@ -74,9 +85,6 @@ export const updateNews = async (parent: any, input:newsProps, context:any) => {
         message: "You are not authorized to update news"
       };
     }
-
-
-    
 
     return {
       success: true,
