@@ -166,7 +166,7 @@ const MainServer = async () => {
   })
 
   // '0.0.0.0' is used to make the server accessible from outside the network
-  httpServer.listen(port,() => {
+  httpServer.listen(port,'0.0.0.0',() => {
     console.log(`🚀 Express Server is Fired at http://0.0.0.0:${port}`)
     console.log(`🚀 Graph Ql Server is Fire at http://0.0.0.0:${port}/graphql`)
   })
