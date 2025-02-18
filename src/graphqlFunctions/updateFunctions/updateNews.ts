@@ -92,7 +92,6 @@ export const updateNews = async (parent: any, input:newsProps, context:any) => {
       message: "News updated successfully",
     };
   } catch (error: any) {
-    console.log(error,"error from news update server");
     throw new Error("Error updating user: " + error.message);
   }
 };

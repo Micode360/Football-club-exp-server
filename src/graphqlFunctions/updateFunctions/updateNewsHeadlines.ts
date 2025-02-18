@@ -38,7 +38,6 @@ export const updateNewsHeadlines:any = async (parent: any, input: any, context: 
       return response(false, 409, 'Something went wrong')
     }
   } catch (error: any) {
-    console.log('Error: ' + error.message)
     return {
       success: false,
       status: 409,

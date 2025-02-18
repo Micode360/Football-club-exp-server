@@ -22,8 +22,7 @@ const base = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let db = yield mongoose_1.default.connect(newbase);
         connection.isConnected = db.connections[0].readyState;
-        console.log('💻 Base status: ', connection.isConnected);
-    }
+            }
     catch (err) {
         console.error(err);
         process.exit(1);

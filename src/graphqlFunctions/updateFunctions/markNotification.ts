@@ -33,7 +33,6 @@ export const markNotification = async (parent: any, input: notificationProps, co
       message: 'Notification Read',
     }
   } catch (error: any) {
-    console.log('Error: ' + error.message)
     return {
       success: false,
       status: 409,

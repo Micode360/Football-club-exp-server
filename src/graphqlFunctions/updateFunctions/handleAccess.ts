@@ -27,8 +27,6 @@ export const HandleAccess = async (parent: any, input: newsProps, context: any) 
       }
     }
 
-    console.log(news.authorIds.includes(author._id), 'author Id?')
-
     if (news.authorIds.includes(userId)) {
       return {
         success: false,

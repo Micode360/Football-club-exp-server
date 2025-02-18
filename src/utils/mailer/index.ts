@@ -30,8 +30,6 @@ export const mailer = (mailTitle:any,options:any) => {
   };
 
   transporter.sendMail(mailOptions, function (err, info) {
-    if (err) console.log(err, "error");
-    else console.log(info, "message sent");
-  });
+    if (err)     else   });
 };
 

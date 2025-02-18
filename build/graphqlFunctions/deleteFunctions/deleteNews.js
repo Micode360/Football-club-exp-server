@@ -38,8 +38,7 @@ const deleteNews = (parent, input, context) => __awaiter(void 0, void 0, void 0,
             if (!id.arrIds) {
                 return { success: false, status: 400, message: 'arrIds is not defined' };
             }
-            console.log(id === null || id === void 0 ? void 0 : id.authorId, 'Author');
-            // Replace forEach with a for...of loop to await each deletion
+                        // Replace forEach with a for...of loop to await each deletion
             for (const item of id.arrIds) {
                 const { id: newsId, imgId, headLineId } = item;
                 const news = yield news_1.News.findOne({ _id: newsId });
@@ -56,8 +55,7 @@ const deleteNews = (parent, input, context) => __awaiter(void 0, void 0, void 0,
                         message: 'You are not authorized to delete this news.',
                     };
                 }
-                console.log('deletion running');
-                // Make sure to destroy the cloudinary image only if there is a valid imgId
+                                // Make sure to destroy the cloudinary image only if there is a valid imgId
                 if (imgId && imgId !== '') {
                     yield cloudinary_1.v2.uploader.destroy(imgId);
                 }

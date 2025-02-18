@@ -25,7 +25,6 @@ export const deleteNews = async (parent: any, input: any, context: any) => {
       if (!id.arrIds) {
         return { success: false, status: 400, message: 'arrIds is not defined' }
       }
-      console.log(id?.authorId, 'Author')
 
       // Replace forEach with a for...of loop to await each deletion
       for (const item of id.arrIds) {
@@ -49,8 +48,6 @@ export const deleteNews = async (parent: any, input: any, context: any) => {
             message: 'You are not authorized to delete this news.',
           }
         }
-
-        console.log('deletion running')
 
         // Make sure to destroy the cloudinary image only if there is a valid imgId
         if (imgId && imgId !== '') {

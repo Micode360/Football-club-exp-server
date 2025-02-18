@@ -85,8 +85,7 @@ const MainServer = () => __awaiter(void 0, void 0, void 0, function* () {
                 return { ctx, msg, args, userId: decodedToken };
             }
             catch (e) {
-                // console.log(e, "ERROR FROM USESERVER")
-                return { ctx, msg, args };
+                //                 return { ctx, msg, args };
             }
         })
     }, wsServer);
@@ -132,8 +131,6 @@ const MainServer = () => __awaiter(void 0, void 0, void 0, function* () {
     });
     // '0.0.0.0' is used to make the server accessible from outside the network
     httpServer.listen(port, '0.0.0.0', () => {
-        console.log(`🚀 Express Server is Fired at http://0.0.0.0:${port}`);
-        console.log(`🚀 Graph Ql Server is Fire at http://0.0.0.0:${port}/graphql`);
-    });
+                    });
 });
 MainServer();

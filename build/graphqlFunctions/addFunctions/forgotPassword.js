@@ -34,8 +34,7 @@ const forgotPassword = (parent, input) => __awaiter(void 0, void 0, void 0, func
         if (!otp) {
             if (isValid) {
                 const my_otp = otplib_1.totp.generate(secret);
-                console.log(my_otp, "otp");
-                // /* SMTP Logic Below */
+                                // /* SMTP Logic Below */
                 // await mailer(
                 //   "The League: Confirm Your Account",{
                 //   to: "abayemiracle@gmail.com",

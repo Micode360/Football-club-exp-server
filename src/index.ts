@@ -109,7 +109,6 @@ const MainServer = async () => {
   
           return { ctx, msg, args, userId: decodedToken }
         }catch(e) {
-         // console.log(e, "ERROR FROM USESERVER")
           return  {ctx, msg, args};
         }
     } 

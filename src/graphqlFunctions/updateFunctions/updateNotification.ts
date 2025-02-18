@@ -56,7 +56,6 @@ export const updateNotification = async (parent: any, input: notificationProps, 
       message: 'Notification Sent',
     }
   } catch (error: any) {
-    console.log('Error: ' + error.message)
     return {
       success: false,
       status: 409,
