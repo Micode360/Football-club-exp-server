@@ -16,13 +16,18 @@ exports.addNews = void 0;
 const news_1 = require("../../models/news");
 const base_1 = __importDefault(require("../../db/base"));
 const response_1 = require("../../utils/response");
+const user_1 = require("../../models/user");
 (0, base_1.default)();
 const addNews = (parent, input, context) => __awaiter(void 0, void 0, void 0, function* () {
     if (context.user === 'unauthorized')
         return (0, response_1.response)(false, 409, 'unathorized to access');
     const { authorIds, title, coverImage, description, author, league, categories, content } = input;
-    //League object to save in database
-    const news = {
+    const user = yield user_1.User.findOne({ _id: authorIds[0] });
+    const superAdmin = yield user_1.User.findOne({ role: 'Super Admin' });
+    if (!user || !superAdmin) {
+        return (0, response_1.response)(false, 404, 'User or Super Admin not found');
+    }
+    let news = {
         authorIds,
         title,
         coverImage,
@@ -30,8 +35,10 @@ const addNews = (parent, input, context) => __awaiter(void 0, void 0, void 0, fu
         author,
         league,
         categories,
-        content
+        content,
     };
+    if (user.role === 'Super Admin')
+        news.status = 'published';
     try {
         const newNews = new news_1.News(news);
         yield newNews.save();
@@ -39,7 +46,7 @@ const addNews = (parent, input, context) => __awaiter(void 0, void 0, void 0, fu
             success: true,
             status: 200,
             message: 'News Added',
-            value: newNews === null || newNews === void 0 ? void 0 : newNews._id
+            value: newNews === null || newNews === void 0 ? void 0 : newNews._id,
         };
     }
     catch (error) {

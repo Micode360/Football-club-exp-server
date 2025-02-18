@@ -29,7 +29,7 @@ const updateNews = (parent, input, context) => __awaiter(void 0, void 0, void 0,
     if (context.user === "unauthorized") {
         return {};
     }
-    const { id, authorIds, userId, title, coverImage, description, author, league, categories, content } = input;
+    const { id, authorIds, userId, title, coverImage, description, author, status, league, categories, content } = input;
     const newsUpdate = {
         authorIds,
         userId,
@@ -54,7 +54,16 @@ const updateNews = (parent, input, context) => __awaiter(void 0, void 0, void 0,
         }
         if ((user.role !== 'Super Admin' && news.authorIds.includes(user === null || user === void 0 ? void 0 : user._id)) ||
             user.role === 'Super Admin') {
-            news.set(newsUpdate);
+            if (status === "to_be_published") {
+                news.status = "published";
+                yield news.save();
+                return {
+                    success: true,
+                    status: 200,
+                    message: "News published successfully",
+                };
+            }
+            news.set({ status });
             yield news.save();
             const channel = `NEWS_UPDATE`;
             pubsub_1.pubsub.publish(channel, { newsUpdate: Object.assign(Object.assign({}, newsUpdate), { id, createdAt: news.createdAt }) });
