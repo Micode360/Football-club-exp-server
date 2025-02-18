@@ -15,8 +15,7 @@ const base = async () => {
   try {
     let db = await mongoose.connect(newbase)
     connection.isConnected = db.connections[0].readyState
-    console.log('💻 Base status: ', connection.isConnected)
-  } catch (err) {
+      } catch (err) {
     console.error(err)
     process.exit(1)
   }

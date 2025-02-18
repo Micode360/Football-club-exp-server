@@ -54,8 +54,7 @@ export const addLeague = async (parent: any, input: leagueProps, context: any) =
       return response(false, 409, 'Something went wrong')
     }
   } catch (error: any) {
-    console.log('Error: ' + error.message)
-    return {
+        return {
       success: false,
       status: 409,
       message: error.message,

@@ -27,7 +27,6 @@ export const deleteNotifications = async (parent: any, input: notificationProps,
       message: type === 'single' ? 'Notification Deleted' : 'Notifications Deleted',
     }
   } catch (error: any) {
-    console.log('Error: ' + error.message)
     return {
       success: false,
       status: 409,

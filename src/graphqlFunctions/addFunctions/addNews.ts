@@ -42,8 +42,7 @@ export const addNews = async (parent: any, input: newsProps, context: any) => {
       value: newNews?._id,
     }
   } catch (error: any) {
-    console.log('Error: ' + error.message)
-    return {
+        return {
       success: false,
       status: 409,
       message: error.message,

@@ -82,8 +82,7 @@ const updateNews = (parent, input, context) => __awaiter(void 0, void 0, void 0,
         };
     }
     catch (error) {
-        console.log(error, "error from news update server");
-        throw new Error("Error updating user: " + error.message);
+                throw new Error("Error updating user: " + error.message);
     }
 });
 exports.updateNews = updateNews;

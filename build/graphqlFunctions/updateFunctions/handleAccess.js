@@ -34,8 +34,7 @@ const HandleAccess = (parent, input, context) => __awaiter(void 0, void 0, void 
                 value: null,
             };
         }
-        console.log(news.authorIds.includes(author._id), 'author Id?');
-        if (news.authorIds.includes(userId)) {
+                if (news.authorIds.includes(userId)) {
             return {
                 success: false,
                 status: 403,

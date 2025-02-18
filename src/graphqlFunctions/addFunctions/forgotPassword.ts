@@ -25,8 +25,7 @@ export const forgotPassword = async (parent: any, input: any) => {
 
       if (isValid) {
         const my_otp = totp.generate(secret);
-        console.log(my_otp, "otp");
-        // /* SMTP Logic Below */
+                // /* SMTP Logic Below */
 
         // await mailer(
         //   "The League: Confirm Your Account",{

@@ -65,8 +65,7 @@ const updateNotification = (parent, input, context) => __awaiter(void 0, void 0,
         };
     }
     catch (error) {
-        console.log('Error: ' + error.message);
-        return {
+                return {
             success: false,
             status: 409,
             message: error.message,
