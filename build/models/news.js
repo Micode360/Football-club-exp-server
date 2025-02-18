@@ -9,7 +9,7 @@ const Schema = mongoose_1.default.Schema;
 const NewsSchema = new Schema({
     title: {
         type: String,
-        required: [true, "News name required"],
+        required: [false, "News name required"],
     },
     authorIds: [{
             type: Schema.Types.ObjectId,
@@ -19,6 +19,12 @@ const NewsSchema = new Schema({
     description: {
         type: String,
         required: false,
+    },
+    status: {
+        type: String,
+        required: false,
+        enum: ["rejected", "draft", "published"], // Restrict status to these three values
+        default: "draft", // Optional: Set a default value
     },
     author: {
         type: String,

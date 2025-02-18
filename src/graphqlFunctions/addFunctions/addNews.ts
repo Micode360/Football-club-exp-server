@@ -35,21 +35,6 @@ export const addNews = async (parent: any, input: newsProps, context: any) => {
 
     await newNews.save()
 
-    if (user.role !== 'Super Admin') {
-      await updateNotification(
-        parent,
-        {
-          sender: user._id,
-          type: 'request',
-          description: 'has created a news ready to be published. Waiting for your approval.',
-          action: `/news/${newNews._id}`,
-          recipient: superAdmin._id,
-        },
-        context
-      );
-    }
-
-
     return {
       success: true,
       status: 200,

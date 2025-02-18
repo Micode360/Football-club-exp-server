@@ -33,40 +33,48 @@ const deleteNews = (parent, input, context) => __awaiter(void 0, void 0, void 0,
         if (!user)
             return { status: 404, message: 'User not found' };
         //For multiple deletion
+        // Multiple deletion section:
         if (id.arrIds.length > 0) {
             if (!id.arrIds) {
                 return { success: false, status: 400, message: 'arrIds is not defined' };
             }
-            const deletionPromises = [...id.arrIds].forEach(({ id, imgId }) => __awaiter(void 0, void 0, void 0, function* () {
-                const news = yield news_1.News.findOne({ _id: id });
-                if ((user.role !== 'Super Admin' && news.authorIds.includes(user === null || user === void 0 ? void 0 : user._id)) ||
-                    user.role === 'Super Admin') {
-                    console.log("deletion running");
-                    if (imgId || imgId !== '') {
-                        cloudinary_1.v2.uploader.destroy(imgId);
-                    }
-                    const deleteModel = yield news_1.News.findOneAndDelete({ _id: id });
-                    if (!deleteModel) {
-                        return { status: 400, message: 'Invalid id' };
-                    }
-                    if (id === null || id === void 0 ? void 0 : id.headLineId) {
-                        // Multiple Deletion from headline news starts here
-                        const foundHeadlineNews = yield newsHeadline_1.NewsHeadline.findOne({ _id: id === null || id === void 0 ? void 0 : id.headLineId });
-                        const headlines = foundHeadlineNews.headlines.filter((news) => (news === null || news === void 0 ? void 0 : news.id) !== id);
-                        foundHeadlineNews.headlines = headlines;
-                        foundHeadlineNews.markModified('headlines');
-                        foundHeadlineNews.save();
-                        //Multiple Deletion from headline news ends here.
-                    }
+            console.log(id === null || id === void 0 ? void 0 : id.authorId, 'Author');
+            // Replace forEach with a for...of loop to await each deletion
+            for (const item of id.arrIds) {
+                const { id: newsId, imgId, headLineId } = item;
+                const news = yield news_1.News.findOne({ _id: newsId });
+                if (!news) {
+                    return { success: false, status: 400, message: 'Invalid news id' };
                 }
-                else {
+                // IMPORTANT: Check that the user is authorized for THIS news item.
+                // (Note that user is being fetched by id?.authorId as before.)
+                if (!((user.role !== 'Super Admin' && news.authorIds.includes(user === null || user === void 0 ? void 0 : user._id)) ||
+                    user.role === 'Super Admin')) {
                     return {
                         success: false,
                         status: 400,
                         message: 'You are not authorized to delete this news.',
                     };
                 }
-            }));
+                console.log('deletion running');
+                // Make sure to destroy the cloudinary image only if there is a valid imgId
+                if (imgId && imgId !== '') {
+                    yield cloudinary_1.v2.uploader.destroy(imgId);
+                }
+                const deleteModel = yield news_1.News.findOneAndDelete({ _id: newsId });
+                if (!deleteModel) {
+                    return { status: 400, message: 'Invalid id' };
+                }
+                // If there is an associated headline news, update it as before.
+                if (headLineId) {
+                    const foundHeadlineNews = yield newsHeadline_1.NewsHeadline.findOne({ _id: headLineId });
+                    if (foundHeadlineNews) {
+                        foundHeadlineNews.headlines = foundHeadlineNews.headlines.filter((newsItem) => (newsItem === null || newsItem === void 0 ? void 0 : newsItem.id) !== newsId);
+                        foundHeadlineNews.markModified('headlines');
+                        yield foundHeadlineNews.save();
+                    }
+                }
+            }
             return { success: true, status: 200, message: 'Multiple News Successfully deleted' };
         }
         else {

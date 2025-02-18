@@ -63,14 +63,14 @@ export const updateNews = async (parent: any, input:newsProps, context:any) => {
       (user.role !== 'Super Admin' && news.authorIds.includes(user?._id)) ||
         user.role === 'Super Admin'
     ){
-      if(status !== ""){
-        news.set(newsUpdate);
+      if(status === "to_be_published"){
+        news.status = "published";
         await news.save();
 
         return {
           success: true,
           status: 200,
-          message: "News status updated successfully",
+          message: "News published successfully",
         };
       }
       news.set({status});
